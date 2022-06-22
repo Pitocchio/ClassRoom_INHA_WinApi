@@ -13,6 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Basic">
+      <UniqueIdentifier>{24e6c5fe-12ac-4c8a-bfc5-a698b5ac838d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Tasks">
+      <UniqueIdentifier>{5f48ef4f-1b89-4ffe-85ad-94fe361735d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GEOMETRY">
+      <UniqueIdentifier>{8595a2af-7ca5-4a32-b7f8-f38cc36b5e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GEOMETRY\Circle2D">
+      <UniqueIdentifier>{4225805c-d61b-4199-be65-2f967f51615e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GEOMETRY\Mypoint">
+      <UniqueIdentifier>{d9f62572-985c-481a-8b00-f697801c8d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GEOMETRY\Rectangle2D">
+      <UniqueIdentifier>{223b1193-0cad-44d5-9d97-6764070c9505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GEOMETRY\Vector">
+      <UniqueIdentifier>{27fa46f6-34ae-4924-8e91-a17c1c01f26f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\5.TEXT">
+      <UniqueIdentifier>{5b8a4db1-6224-437e-8a06-7fe88120973d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\PROJECT">
+      <UniqueIdentifier>{4b696fa2-f454-4b75-a995-b9a1a1ba8d10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -27,10 +54,55 @@
     <ClInclude Include="WinApi32_Wizard.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Circle2D.h">
+      <Filter>소스 파일\GEOMETRY\Circle2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Mypoint.h">
+      <Filter>소스 파일\GEOMETRY\Mypoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle2D.h">
+      <Filter>소스 파일\GEOMETRY\Rectangle2D</Filter>
+    </ClInclude>
+    <ClInclude Include="cVector.h">
+      <Filter>소스 파일\GEOMETRY\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleParty.h">
+      <Filter>소스 파일\PROJECT</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinApi32_Wizard.cpp">
+    <ClCompile Include="All.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EVENT_Key_Mouse_Time.cpp">
+      <Filter>소스 파일\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Draw_Star.cpp">
+      <Filter>소스 파일\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawBox_byArrowKey.cpp">
+      <Filter>소스 파일\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle2D_Source.cpp">
+      <Filter>소스 파일\GEOMETRY\Circle2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Mypoint_Source.cpp">
+      <Filter>소스 파일\GEOMETRY\Mypoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle2D.cpp">
+      <Filter>소스 파일\GEOMETRY\Rectangle2D</Filter>
+    </ClCompile>
+    <ClCompile Include="cVector_source.cpp">
+      <Filter>소스 파일\GEOMETRY\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Temp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CIRCLE_PARTY.cpp">
+      <Filter>소스 파일\PROJECT</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleParty_Source.cpp">
+      <Filter>소스 파일\PROJECT</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,5 +120,10 @@
     <Image Include="C:\Users\Admin\Downloads\freestockpng.net-png-question-mark-black-with-background-4443.png">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="EXAMPLE.txt">
+      <Filter>소스 파일\5.TEXT</Filter>
+    </Text>
   </ItemGroup>
 </Project>

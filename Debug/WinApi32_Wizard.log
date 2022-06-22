@@ -1,11 +1,13 @@
-﻿  WinApi32_Wizard.cpp
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(399,56): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(399,32): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(400,56): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(400,32): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(401,41): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(430,56): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(430,32): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(431,56): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\WinApi32_Wizard.cpp(431,32): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  WinApi32_Wizard.vcxproj -> D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Debug\WinApi32_Wizard.exe
+﻿  CIRCLE_PARTY.cpp
+  CircleParty_Source.cpp
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8,16): error C2065: 'Circle2D': 선언되지 않은 식별자입니다. (소스 파일 컴파일 중 CIRCLE_PARTY.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8,8): error C2923: 'std::vector': 'Circle2D'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다. (소스 파일 컴파일 중 CIRCLE_PARTY.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8): message : 'Circle2D' 선언을 참조하십시오. (소스 파일 컴파일 중 CIRCLE_PARTY.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다. (소스 파일 컴파일 중 CIRCLE_PARTY.cpp)
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오. (소스 파일 컴파일 중 CIRCLE_PARTY.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8,16): error C2065: 'Circle2D': 선언되지 않은 식별자입니다. (소스 파일 컴파일 중 CircleParty_Source.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8,8): error C2923: 'std::vector': 'Circle2D'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다. (소스 파일 컴파일 중 CircleParty_Source.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8): message : 'Circle2D' 선언을 참조하십시오. (소스 파일 컴파일 중 CircleParty_Source.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty.h(8,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다. (소스 파일 컴파일 중 CircleParty_Source.cpp)
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오. (소스 파일 컴파일 중 CircleParty_Source.cpp)
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\CircleParty_Source.cpp(18,12): error C2663: 'std::vector<_Ty,_Alloc>::push_back': 2개의 오버로드에서 'this' 포인터에 대한 변환이 잘못되었습니다.
