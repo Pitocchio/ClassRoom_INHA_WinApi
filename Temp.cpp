@@ -112,7 +112,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         break;
 
-        // 마우스 이벤트  호출
     case WM_LBUTTONDOWN:
     {
         if (sqrt(pow((LOWORD(lParam) - curPos.x), 2) + pow((HIWORD(lParam) - curPos.y), 2)) <= 20)
@@ -133,7 +132,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (bFlag)
         {
             curPos.x = LOWORD(lParam);
-            curPos.y = HIWORD(lParam); // 클릭시 오브젝트 위치를 클릭 위치로 설정
+            curPos.y = HIWORD(lParam); 
             InvalidateRect(hWnd, NULL, TRUE);
         }
 
@@ -144,7 +143,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
-        // 메뉴 선택을 구문 분석합니다:
         switch (wmId)
         {
         case IDM_ABOUT:

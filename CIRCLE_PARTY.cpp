@@ -3,11 +3,10 @@
 #include <cmath>
 #include <string>
 #include <iostream>
-#include "CircleParty.h"
+#include "GEOMETRY.h"
 
 #define MAX_LOADSTRING 100
 
-#define R 20 // CircleRadius
 
 HINSTANCE hInst;
 WCHAR szTitle[MAX_LOADSTRING];
@@ -16,9 +15,6 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-
-int KeyDown(0), KeyUp(0);
-bool bFlag(0);
 
 void DrawMove_Ellipse(HDC hdc, POINT curPos);
 
@@ -55,7 +51,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     return (int)msg.wParam;
 }
-
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
@@ -96,17 +91,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static POINT curPos;
-    static RECT rcClient;
-    RECT rc{ 0 };
+;
     switch (message)
     {
     case WM_CREATE:
 
-        GetClientRect(hWnd, &rcClient);
 
         break;
 
@@ -115,19 +107,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         curPos.x = LOWORD(lParam);
         curPos.y = HIWORD(lParam);
 
-        /*std::vector<Circle2D> vecCircle;
-        Circle2D c1(curPos, R);
-        vecCircle.push_back(c1);*/
+      
+        Circle *t = new Circle(curPos, 1, 1, 20);
 
-        Circle2D circle(curPos, R);
-        circle.PUSHBACK();
+       // Circle c(curPos, 1, 1, 20);
 
-        InvalidateRect(hWnd, NULL, TRUE);
+        InvalidateRect(hWnd, NULL, FALSE);
         break;
     }
-
-    case WM_LBUTTONUP:
-        InvalidateRect(hWnd, NULL, TRUE);
 
         break;
     case WM_COMMAND:
@@ -147,22 +134,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
 
-
-
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
         HBRUSH hBrush, oldBrush;
-        hBrush = CreateSolidBrush(RGB(200, 80, 70)); 
+        hBrush = CreateSolidBrush(RGB(200, 255, 255)); 
         oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
         
         DrawMove_Ellipse(hdc, curPos);
 
         SelectObject(hdc, oldBrush);
         DeleteObject(hBrush);
-
 
         EndPaint(hWnd, &ps);
     }
@@ -194,7 +178,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
-
 
 
 

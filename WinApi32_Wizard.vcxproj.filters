@@ -66,7 +66,7 @@
     <ClInclude Include="cVector.h">
       <Filter>소스 파일\GEOMETRY\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="CircleParty.h">
+    <ClInclude Include="GEOMETRY.h">
       <Filter>소스 파일\PROJECT</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,7 +101,7 @@
     <ClCompile Include="CIRCLE_PARTY.cpp">
       <Filter>소스 파일\PROJECT</Filter>
     </ClCompile>
-    <ClCompile Include="CircleParty_Source.cpp">
+    <ClCompile Include="GEOMETRY_Source.cpp">
       <Filter>소스 파일\PROJECT</Filter>
     </ClCompile>
   </ItemGroup>

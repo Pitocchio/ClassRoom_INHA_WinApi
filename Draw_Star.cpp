@@ -17,7 +17,6 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 
-void DrawGrid_Test(HDC hdc, POINT LeftTop, POINT RightBottom, LONG nWidth, LONG nHeight); // 격자무늬 그리기
 void DrawCircle_Test(HDC hdc, POINT center, int radius);
 void DrawPolygon_Test(HDC hdc);
 void DrawSunFlower_Test(HDC hdc, POINT center, int radius, int num);
@@ -104,8 +103,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     return TRUE;
 }
 
-
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static POINT curPos;
@@ -137,10 +134,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
   
 
-    case WM_PAINT: // c_글자출력이나 글씨를 쓰거나 다 여기서!!!!
+    case WM_PAINT: 
     {
         PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps); // 그리기 시작 포인트
+        HDC hdc = BeginPaint(hWnd, &ps); 
 
         POINT iCenter = tagPOINT{ 300, 300 };
 
@@ -197,41 +194,57 @@ void DrawPolygon_Test(HDC hdc)
 
 void DrawStar_Test(HDC hdc, POINT center, int distance, int num)
 {
-    POINT* arr = new POINT[num];
+    POINT* arr = new POINT[num*2];
 
     double angle;
     angle = 2 * PI / num;
-    POINT MovePoint;
 
     DrawCircle_Test(hdc, center, 3);
 
     for (int i = 0; i < num; ++i)
     {
+        // 외부 포인트
+        POINT MovePoint;
         MovePoint.x = center.x + distance * cosf(angle * i);
         MovePoint.y = center.y + distance * sinf(angle * i);
-
         arr[i] = MovePoint;
-
-        DrawCircle_Test(hdc, MovePoint, 3);
+        DrawCircle_Test(hdc, MovePoint, (i + 1) * 2);
     }
 
-    double d = sqrt(pow((arr[0].x - arr[1].x), 2) + pow((arr[0].y - arr[1].y), 2));
-    double t = sqrt(pow((center.x - arr[0].x), 2) + pow((center.y - arr[0].y), 2));
-    double x = sqrt(pow(t, 2) - (pow(d, 2) / 4));
-    double m = d / (2 * tanf(angle / 2));
+    for (int i = num; i < num*2; ++i)
+    {
+        // 내부 포인트
+        POINT MovePoint1;
+        double d = sqrt(pow((arr[0].x - arr[1].x), 2) + pow((arr[0].y - arr[1].y), 2));
+        double x = sqrt((distance * distance) - ((d * d) / 4));
+        double m = d / (2 * tanf(angle));
+        MovePoint1.x = center.x + (x - m) * sinf(angle * i);
+        MovePoint1.y = center.y + (x - m) * cosf(angle * i);
+        arr[i] = MovePoint1;
+        DrawCircle_Test(hdc, MovePoint1, (i + 1) * 2);
 
-    POINT MovePoint1;
+       /* MoveToEx(hdc, MovePoint.x, MovePoint.y, NULL);
+        LineTo(hdc, MovePoint1.x, MovePoint1.y);*/
+    }
+    Polygon(hdc, arr, num*2);
 
-    MovePoint1.x = center.x + (x - m) * sinf(angle / 2);
-    MovePoint1.y = center.y + (x - m) * cosf(angle / 2);
+    //for (int i = 0; i<num; ++i)
+    //{
+    //    // 내부 포인트
+    //    POINT MovePoint1;
+    //    double d = sqrt(pow((arr[0].x - arr[1].x), 2) + pow((arr[0].y - arr[1].y), 2));
+    //    double x = sqrt((distance * distance) - ((d * d) / 4));
+    //    double m = d / (2 * tanf(angle));
+    //    MovePoint1.x = center.x + (x - m) * sinf(angle*i);
+    //    MovePoint1.y = center.y + (x - m) * cosf(angle*i);
+    //    DrawCircle_Test(hdc, MovePoint1, 3);
 
-    DrawCircle_Test(hdc, MovePoint1, 5);
 
-
-    Polygon(hdc, arr, num);
+    //    //Polygon(hdc, arr, num);
+    //}
 
     delete[] arr;
-
+    
 }
 
 
