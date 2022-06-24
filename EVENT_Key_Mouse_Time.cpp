@@ -112,15 +112,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         GetClientRect(hWnd, &rcClient);
 
         // 타이머 이벤트 변수 설정 
-        /*
+        
         SetTimer(hWnd, 1, 100, NULL); // 기본, 타이머 ID, ms마다 이벤트 호출, 함수호출
         SetTimer(hWnd, 2, 100, NULL);
-        */
+        
 
         break;
 
         //타이머 이벤트 호출
-        /*case WM_TIMER:
+        case WM_TIMER:
             if (wParam == 1) // 1번 타이머라면
             {
                 curPos.x += 40;
@@ -136,7 +136,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             InvalidateRect(hWnd, NULL, TRUE);
 
             break;
-        */
+        
 
         // 마우스 이벤트  호출
     case WM_LBUTTONDOWN:

@@ -7,7 +7,6 @@
 
 #define MAX_LOADSTRING 100
 
-
 HINSTANCE hInst;
 WCHAR szTitle[MAX_LOADSTRING];
 WCHAR szWindowClass[MAX_LOADSTRING];
@@ -16,7 +15,13 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-void DrawMove_Ellipse(HDC hdc, POINT curPos);
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+
+void DrawMove_Ellipse(HDC hdc, POINT curPos, double radius);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
@@ -39,7 +44,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPI32WIZARD));
 
     MSG msg;
-
     while (GetMessage(&msg, nullptr, 0, 0))
     {
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
@@ -93,12 +97,30 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static RECT rcClient;
+    static CircleManager Manager_Circle;
+    static vector<Circle> Circlevec = Manager_Circle.Get_Vector();
     static POINT curPos;
-;
+
+    static ObjectManager man_test;
+
     switch (message)
     {
     case WM_CREATE:
+  
+        GetClientRect(hWnd, &rcClient);
 
+        SetTimer(hWnd, 1, 50, NULL);
+
+        break;
+
+    case WM_TIMER:
+        if (wParam == 1) 
+        {
+            Manager_Circle.Update();
+        }
+
+        InvalidateRect(hWnd, NULL, TRUE);
 
         break;
 
@@ -107,16 +129,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         curPos.x = LOWORD(lParam);
         curPos.y = HIWORD(lParam);
 
-      
-        Circle *t = new Circle(curPos, 1, 1, 20);
+        //Circle t(curPos, 10, 35);
+        man_test.circle_test(curPos);
+        //Manager_Circle.PushBack(t);
 
-       // Circle c(curPos, 1, 1, 20);
 
-        InvalidateRect(hWnd, NULL, FALSE);
-        break;
+
+        InvalidateRect(hWnd, NULL, TRUE);
     }
 
         break;
+ 
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
@@ -139,20 +162,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        HBRUSH hBrush, oldBrush;
-        hBrush = CreateSolidBrush(RGB(200, 255, 255)); 
-        oldBrush = (HBRUSH)SelectObject(hdc, hBrush);
-        
-        DrawMove_Ellipse(hdc, curPos);
-
-        SelectObject(hdc, oldBrush);
-        DeleteObject(hBrush);
+     
+        for (int i = 0; i < Manager_Circle.Get_Vector().size(); ++i)
+        {
+            DrawMove_Ellipse(hdc, Manager_Circle.Get_Vector()[i].Get_Pos(), Manager_Circle.Get_Vector()[i].Get_Radius());
+        }
 
         EndPaint(hWnd, &ps);
     }
     break;
     case WM_DESTROY:
         PostQuitMessage(0);
+        KillTimer(hWnd, 1);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -179,10 +200,8 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-
-
-void DrawMove_Ellipse(HDC hdc, POINT curPos)
+void DrawMove_Ellipse(HDC hdc, POINT curPos, double radius)
 {
-    Ellipse(hdc, curPos.x - 20, curPos.y - 20, curPos.x + 20, curPos.y + 20);
+    Ellipse(hdc, curPos.x - radius, curPos.y - radius, curPos.x + radius, curPos.y + radius);
 }
 
