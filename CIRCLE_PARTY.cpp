@@ -3,7 +3,9 @@
 #include <cmath>
 #include <string>
 #include <iostream>
-#include "GEOMETRY.h"
+#include "Geometry_.h"
+#include "Circle_.h"
+#include "ObjectManager.h"
 
 #define MAX_LOADSTRING 100
 
@@ -98,11 +100,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static RECT rcClient;
-    static CircleManager Manager_Circle;
-    static vector<Circle> Circlevec = Manager_Circle.Get_Vector();
     static POINT curPos;
 
-    static ObjectManager man_test;
+
+    // 싱글톤 아래와 같이 사용함
 
     switch (message)
     {
@@ -117,7 +118,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_TIMER:
         if (wParam == 1) 
         {
-            Manager_Circle.Update();
+            //Manager_Circle.Update(); // Move, Collision
+            ObjectManager::GetInstance()->Update();
         }
 
         InvalidateRect(hWnd, NULL, TRUE);
@@ -129,10 +131,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         curPos.x = LOWORD(lParam);
         curPos.y = HIWORD(lParam);
 
-        //Circle t(curPos, 10, 35);
-        man_test.circle_test(curPos);
-        //Manager_Circle.PushBack(t);
-
+        //Manager_Circle.Create_Circle(curPos);
+        ObjectManager::GetInstance()->Create_Circle(curPos);
 
 
         InvalidateRect(hWnd, NULL, TRUE);
@@ -162,12 +162,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-     
-        for (int i = 0; i < Manager_Circle.Get_Vector().size(); ++i)
-        {
-            DrawMove_Ellipse(hdc, Manager_Circle.Get_Vector()[i].Get_Pos(), Manager_Circle.Get_Vector()[i].Get_Radius());
-        }
-
+        //Manager_Circle.Render(hdc);
+        ObjectManager::GetInstance()->Render(hdc);
+       
         EndPaint(hWnd, &ps);
     }
     break;
