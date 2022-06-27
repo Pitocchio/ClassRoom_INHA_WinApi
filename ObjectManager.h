@@ -26,7 +26,9 @@ public: // Update
 	void Render(HDC hdc);
 
 public: // Method
-	void Create_Circle(POINT pos); // 할당 포인터해제 필요
+	void Add_Object(int ObjType, Geometry*); // 생성된 객체를 알맞은 리스트에 넣어줌
+
+
 
 private: // Variables
 	static ObjectManager* m_ObjMgr;

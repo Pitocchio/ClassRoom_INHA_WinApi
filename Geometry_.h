@@ -17,12 +17,11 @@ public:// Get
 	
 public: // Method
 	virtual void Render(HDC hdc) = 0;
-	virtual int Check_Collision_Wall() = 0;
+	//virtual int Check_Collision_Wall() = 0;
 	virtual void Move() = 0;
 
 
 
-	// 부모 클래스의 정보들은 대부분 private는 안 씀
 protected: // Variables
 	POINT m_Pos;
 	double m_Force;

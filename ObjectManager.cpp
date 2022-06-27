@@ -29,12 +29,19 @@ void ObjectManager::DestroyInstance()
 
 void ObjectManager::Update() // General Update
 {
-	for (int i = 0; i < TYPEEND; ++i)
+	// 정석 방법, 그러나 돌아가지 않음
+	//for (int i = 0; i < TYPEEND; ++i)
+	//{
+	//	for (list<Geometry*>::iterator it = m_ObjMap.find((OBJECT_TYPE)i)->second.begin(); it != m_ObjMap.find((OBJECT_TYPE)i)->second.end(); ++it)
+	//	{
+	//		(*it)->Move(); // Position Update
+	//		cout << "ObjectManager Update!\n\n";
+	//	}
+	//}
+
+	for (list<Geometry*>::iterator it = m_CircleList.begin(); it != m_CircleList.end(); ++it)
 	{
-		for (list<Geometry*>::iterator it = m_ObjMap.find((OBJECT_TYPE)i)->second.begin(); it != m_ObjMap.find((OBJECT_TYPE)i)->second.end(); ++it)
-		{
-			(*it)->Move(); // Position Update
-		}
+		(*it)->Move(); // Position Update
 	}
 }
 
@@ -52,18 +59,43 @@ void ObjectManager::FixedUpdate() // Process Collision
 
 void ObjectManager::Render(HDC hdc)
 {
+	// 정석 방법, 그러나 돌아가지 않음
+	/*for (int i = 0; i < TYPEEND; ++i)
+	{
+		for (list<Geometry*>::iterator it = m_ObjMap.find((OBJECT_TYPE)i)->second.begin(); it != m_ObjMap.find((OBJECT_TYPE)i)->second.end(); ++it)
+		{
+			(*it)->Render(hdc);
+			cout << "ObjectManager Render!\n\n";
+		}
+	}*/
+
+
 	for (list<Geometry*>::iterator it = m_CircleList.begin(); it != m_CircleList.end(); ++it)
 	{
 		(*it)->Render(hdc);
 	}
+
+	
 }
 
-void ObjectManager::Create_Circle(POINT pos)
+void ObjectManager::Add_Object(int ObjType, Geometry* temp)
 {
-	Circle* t = new Circle(pos, 10, 30);
+	switch (ObjType)
+	{
+		case 0:
+			m_CircleList.push_back(temp);
+			break;
 
-	cout << "Create New Circle_Object!\n\n";
+		case 1: 
+			m_SquareList.push_back(temp);
+			break;
 
-	m_CircleList.push_back(t);
+		case 2:
+			m_StarList.push_back(temp);
+			break;
 
+		default :
+			NULL;
+	}
 }
+

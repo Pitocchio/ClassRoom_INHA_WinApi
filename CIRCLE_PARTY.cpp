@@ -102,8 +102,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static RECT rcClient;
     static POINT curPos;
 
-
-
     switch (message)
     {
     case WM_CREATE:
@@ -126,17 +124,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_LBUTTONDOWN:
     {
+        
         curPos.x = LOWORD(lParam);
         curPos.y = HIWORD(lParam);
 
-        //Manager_Circle.Create_Circle(curPos);
-        ObjectManager::GetInstance()->Create_Circle(curPos);
-
+        // 랜덤 수 만들어서 switch 돌린 다음 각각 Cirecle 생성, Rectangle 생성, Star 생성
+        
+        Circle* temp = new Circle(curPos, 10, 30);
+        ObjectManager::GetInstance()->Add_Object(0, temp);
 
         InvalidateRect(hWnd, NULL, TRUE);
     }
-
-        break;
+    break;
  
     case WM_COMMAND:
     {
@@ -160,6 +159,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
+        ObjectManager::GetInstance()->Update();
         ObjectManager::GetInstance()->Render(hdc);
        
         EndPaint(hWnd, &ps);
@@ -194,8 +194,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-void DrawMove_Ellipse(HDC hdc, POINT curPos, double radius)
-{
-    Ellipse(hdc, curPos.x - radius, curPos.y - radius, curPos.x + radius, curPos.y + radius);
-}
 
