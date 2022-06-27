@@ -46,9 +46,6 @@
     <Filter Include="소스 파일\PROJECT\Manager">
       <UniqueIdentifier>{6fc3f8a7-4e33-49bd-b206-7bac1b82b185}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\PROJECT\Main">
-      <UniqueIdentifier>{7894d2cd-916e-4303-b9bb-0076cc84fdba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\PROJECT\Geometry\Circle">
       <UniqueIdentifier>{b1d4eb5e-48ec-43e3-b93a-5d9047ee186c}</UniqueIdentifier>
     </Filter>
@@ -78,14 +75,17 @@
     <ClInclude Include="cVector.h">
       <Filter>소스 파일\GEOMETRY\Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry_.h">
-      <Filter>소스 파일\PROJECT\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="Circle_.h">
       <Filter>소스 파일\PROJECT\Geometry\Circle</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>소스 파일\PROJECT\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>소스 파일\PROJECT\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry_.h">
+      <Filter>소스 파일\PROJECT\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,14 +119,17 @@
     <ClCompile Include="CIRCLE_PARTY.cpp">
       <Filter>소스 파일\PROJECT</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>소스 파일\PROJECT\Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>소스 파일\PROJECT\Geometry\Circle</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>소스 파일\PROJECT\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>소스 파일\PROJECT\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>소스 파일\PROJECT\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

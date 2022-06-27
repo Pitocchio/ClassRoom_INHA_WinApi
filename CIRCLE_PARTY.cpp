@@ -103,7 +103,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static POINT curPos;
 
 
-    // 싱글톤 아래와 같이 사용함
 
     switch (message)
     {
@@ -118,7 +117,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_TIMER:
         if (wParam == 1) 
         {
-            //Manager_Circle.Update(); // Move, Collision
             ObjectManager::GetInstance()->Update();
         }
 
@@ -162,7 +160,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        //Manager_Circle.Render(hdc);
         ObjectManager::GetInstance()->Render(hdc);
        
         EndPaint(hWnd, &ps);

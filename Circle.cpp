@@ -30,13 +30,9 @@ int Circle::Check_Collision_Wall()
 }
 
 
-//
-//void Circle::Move()
-//{
-//	// 업 캐스팅 해서 지오메트리의 포지션을 받아오게
-//
-//	Geometry* temp = this;
-//	
-//	m_Pos.x += cosf(m_Theta) * m_Force;
-//	//	m_Pos.y += sinf(m_Theta) * m_Force;
-//}
+
+void Circle::Move()
+{
+	m_Pos.x += cosf(m_Theta) * m_Force;
+	m_Pos.y += sinf(m_Theta) * m_Force;
+}

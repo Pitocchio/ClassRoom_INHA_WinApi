@@ -5,27 +5,27 @@ using namespace std;
 
 class Geometry
 {
-	private:
-		POINT m_Pos;
-		double m_Force;
-		double m_Theta;
+public: 
+	Geometry();
+	~Geometry();
+	Geometry (POINT Pos, double Speed);
 
-	public:
-		// Ctor, Dtor
-		Geometry() { m_Pos = { 0 }; m_Force = 0; };
-		~Geometry() {};
-		Geometry (POINT Pos, double Speed);
+public:// Get 
+	POINT Get_Pos() const { return m_Pos; }
+	double Get_Speed() const { return m_Force; }
 
-		// Get 
-		POINT Get_Pos() const { return m_Pos; }
-		double Get_Speed() const { return m_Force; }
+	
+public: // Method
+	virtual void Render(HDC hdc) = 0;
+	virtual int Check_Collision_Wall() = 0;
+	virtual void Move() = 0;
 
-		// Update
-		virtual void Render(HDC hdc) = 0;
 
-		virtual int Check_Collision_Wall() = 0;
 
-		void Move();
-
-		//virtual void Move() = 0;
+	// 부모 클래스의 정보들은 대부분 private는 안 씀
+protected: // Variables
+	POINT m_Pos;
+	double m_Force;
+	double m_Theta;
+	int m_IsCollision;
 };

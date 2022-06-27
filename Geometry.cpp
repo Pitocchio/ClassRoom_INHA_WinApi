@@ -2,6 +2,18 @@
 #include <ctime>
 #include <cmath>
 
+Geometry::Geometry() 
+{ 
+	m_Pos = { 0 }; 
+	m_Force = 0; 
+	m_IsCollision = 0;
+};
+
+Geometry::~Geometry()
+{
+
+}
+
 Geometry::Geometry(POINT Pos, double Force)
 {
 	m_Pos = Pos;
