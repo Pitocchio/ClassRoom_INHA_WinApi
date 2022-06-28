@@ -6,7 +6,10 @@ Geometry::Geometry()
 { 
 	m_Pos = { 0 }; 
 	m_Force = 0; 
-	m_IsCollision = 0;
+	//m_IsCollisionWall = 0;
+	m_IsCollisionObj = 0;
+	m_CollisionObj = NULL;
+	srand(time(NULL)); // 근데 왜 이거 여기다 두면 효과 있는 거야?
 };
 
 Geometry::~Geometry()
@@ -18,44 +21,25 @@ Geometry::Geometry(POINT Pos, double Force)
 {
 	m_Pos = Pos;
 	m_Force = Force;
-
-	srand(time(NULL));
 	m_Theta = rand() % 360;
-};
+}
+void Geometry::Set_IsCollisionObj(bool b)
+{
+	m_IsCollisionObj = b;
+}
+void Geometry::Set_CollisionObj(Geometry* obj)
+{
+	m_CollisionObj = obj;
+}
+bool Geometry::Peak_IsCollision()
+{
+	if (m_CollisionObj != NULL)
+		return true;
+	else
+		return false;
+}
+void Geometry::Reset_CollisionObj()
+{
+	m_CollisionObj = NULL;
+}
 
-//
-//void Geometry::Move()
-//{
-//
-//	switch (Check_Collision_Wall())
-//	{
-//		case 0:
-//				m_Pos.x += cosf(m_Theta) * m_Force;
-//				m_Pos.y += sinf(m_Theta) * m_Force;
-//				break;
-//
-//		case -1: 
-//				m_Pos.x += cosf(m_Theta) * m_Force * -1;
-//				m_Pos.y += sinf(m_Theta) * m_Force;
-//				cout << "왼쪽 충돌!\n\n";
-//				break;
-//
-//		case 1:
-//				m_Pos.x += cosf(m_Theta) * m_Force * -1;
-//				m_Pos.y += sinf(m_Theta) * m_Force;
-//				cout << "오른쪽 충돌!\n\n";
-//				break;
-//
-//		case -2:
-//				m_Pos.x += cosf(m_Theta) * m_Force;
-//				m_Pos.y += sinf(m_Theta) * m_Force * -1;
-//				cout << "위쪽 충돌!\n\n";
-//				break;
-//
-//		case 2:
-//				m_Pos.x += cosf(m_Theta) * m_Force;
-//				m_Pos.y += sinf(m_Theta) * m_Force * -1;
-//				cout << "아래쪽 충돌!\n\n";
-//				break;
-//	}	
-//}

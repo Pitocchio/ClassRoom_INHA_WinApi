@@ -13,8 +13,10 @@ public: // Get
 
 public:// Update
 	virtual void Render(HDC hdc) override;
-	//virtual int Check_Collision_Wall() override;
 	virtual void Move() override;
+	virtual void CheckCollisionWall(RECT rc) override;
+
+
 
 private: // Variables
 	double m_Radius;

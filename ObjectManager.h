@@ -2,8 +2,10 @@
 #include "Geometry_.h"
 #include "Circle_.h"
 #include "CollisionManager.h"
+#include <algorithm>
 #include <map>
 #include <list>
+#include <cmath>
 using namespace std;
 
 class ObjectManager
@@ -21,7 +23,7 @@ public: // SingleTone_Variables
 	
 public: // Update
 	void Update(); 
-	void LateUpdate(); 
+	void LateUpdate(RECT rc); 
 	void FixedUpdate(); 
 	void Render(HDC hdc);
 

@@ -116,7 +116,7 @@
     <ClCompile Include="Temp.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CIRCLE_PARTY.cpp">
+    <ClCompile Include="Pr_Main.cpp">
       <Filter>소스 파일\PROJECT</Filter>
     </ClCompile>
     <ClCompile Include="Circle.cpp">
