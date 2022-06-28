@@ -4,8 +4,8 @@
 
 Geometry::Geometry() 
 { 
-	m_Pos = { 0 }; 
-	m_Force = 0; 
+	//m_Pos = { 0 }; 
+	m_Distance = 0;
 	//m_IsCollisionWall = 0;
 	m_IsCollisionObj = 0;
 	m_CollisionObj = NULL;
@@ -17,11 +17,25 @@ Geometry::~Geometry()
 
 }
 
-Geometry::Geometry(POINT Pos, double Force)
+Geometry::Geometry(POINT pos, double dis)
 {
-	m_Pos = Pos;
-	m_Force = Force;
-	m_Theta = rand() % 360;
+	m_Pos.x = pos.x;
+	m_Pos.y = pos.y;
+	m_Distance = dis;
+	m_Angle = rand() % 360;
+
+
+
+	m_lookVec.x = cosf(PI / 180 * m_Angle);
+	m_lookVec.y = sinf(PI / 180 * m_Angle);
+
+	double distemp = (double)sqrt(pow(m_lookVec.x, 2) + pow(m_lookVec.y, 2));
+	
+	m_lookVec.x = m_lookVec.x / distemp;
+	m_lookVec.y = m_lookVec.y / distemp;
+
+
+	
 }
 void Geometry::Set_IsCollisionObj(bool b)
 {

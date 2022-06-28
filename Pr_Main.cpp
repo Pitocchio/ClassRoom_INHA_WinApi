@@ -109,7 +109,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
   
         GetClientRect(hWnd, &rc);
 
-        SetTimer(hWnd, 1, 40, NULL);
+        SetTimer(hWnd, 1, 50, NULL);
 
         break;
 

@@ -59,56 +59,55 @@ void ObjectManager::LateUpdate(RECT rc) // Detect Collision
 
 			if (dynamic_cast<Circle*>(*it1)->Get_Radius() * 2 > m)
 			{
+				cout << "충돌처리 시작!\n";
 				double s = (dynamic_cast<Circle*>(*it1)->Get_Radius() * 2) - m;
 
 				// 겹친 거리만큼 빼줌
 				(*it1)->Set_Pos((*it1)->Get_Pos().x - (s / 2.0), (*it1)->Get_Pos().y - (s / 2.0));
 				(*it2)->Set_Pos((*it2)->Get_Pos().x + (s / 2.0), (*it2)->Get_Pos().y + (s / 2.0));
 
-				// 서로의 앵글을 바꿔줌
-				double temp_theta = (*it1)->Get_Theta();
-				(*it1)->Set_Theta((*it2)->Get_Theta());
-				(*it2)->Set_Theta(temp_theta);
-
-				/*POINT temp = (*it1)->Get_Pos();
-				(*it1)->Set_Pos((*it2)->Get_Pos());
-				(*it2)->Set_Pos(temp);*/
+				// 방향벡터 교환
+				Vector2 temp = (*it1)->Get_LookVec();
+				(*it1)->Set_Lookvec((*it2)->Get_LookVec());
+				(*it2)->Set_Lookvec(temp);
+				cout << "충돌처리 종료!\n\n\n";
+				
 			}
 		}
 	}
 }
 
-void ObjectManager::FixedUpdate() // Process Collision
-{
-	// CollisionManager 호출해서 충돌 처리 진행 
-
-	for (list<Geometry*>::iterator it = m_CircleList.begin(); it != m_CircleList.end(); ++it)
-	{
-		// Circle* ptr = dynamic_cast<Circle*>(*it);
-
-		int x, y = 0;
-		if ((*it)->Peak_IsCollision()) // 충돌체의 정보가 NULL이 아니라면
-		{
-			// 충돌처리
-
-			// 1. 두 점 사이의 거리
-			double m = sqrt(pow((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().x - dynamic_cast<Circle*>(*it)->Get_Pos().x), 2) +
-							pow((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().y - dynamic_cast<Circle*>(*it)->Get_Pos().y), 2));
-
-			// 2. 겹치는 만큼의 길이 (반지름 * 2 - 두 점 사이의 거리)
-			double s = (dynamic_cast<Circle*>(*it)->Get_Radius() * 2) - m;
-
-			x = dynamic_cast<Circle*>(*it)->Get_Pos().x + (((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().x - dynamic_cast<Circle*>(*it)->Get_Pos().x) / m) * s);
-		    y = dynamic_cast<Circle*>(*it)->Get_Pos().y + (((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().y - dynamic_cast<Circle*>(*it)->Get_Pos().y) / m) * s);
-
-			dynamic_cast<Circle*>(*it)->Set_Pos(x, y);
-
-			cout << "충돌 처리!\n\n";
-
-			(*it)->Reset_CollisionObj(); // 충돌체 정보 초기화
-		}
-	}
-}
+//void ObjectManager::FixedUpdate() // Process Collision
+//{
+//	// CollisionManager 호출해서 충돌 처리 진행 
+//
+//	for (list<Geometry*>::iterator it = m_CircleList.begin(); it != m_CircleList.end(); ++it)
+//	{
+//		// Circle* ptr = dynamic_cast<Circle*>(*it);
+//
+//		int x, y = 0;
+//		if ((*it)->Peak_IsCollision()) // 충돌체의 정보가 NULL이 아니라면
+//		{
+//			// 충돌처리
+//
+//			// 1. 두 점 사이의 거리
+//			double m = sqrt(pow((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().x - dynamic_cast<Circle*>(*it)->Get_Pos().x), 2) +
+//							pow((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().y - dynamic_cast<Circle*>(*it)->Get_Pos().y), 2));
+//
+//			// 2. 겹치는 만큼의 길이 (반지름 * 2 - 두 점 사이의 거리)
+//			double s = (dynamic_cast<Circle*>(*it)->Get_Radius() * 2) - m;
+//
+//			x = dynamic_cast<Circle*>(*it)->Get_Pos().x + (((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().x - dynamic_cast<Circle*>(*it)->Get_Pos().x) / m) * s);
+//		    y = dynamic_cast<Circle*>(*it)->Get_Pos().y + (((dynamic_cast<Circle*>(*it)->Get_CollisionObj()->Get_Pos().y - dynamic_cast<Circle*>(*it)->Get_Pos().y) / m) * s);
+//
+//			dynamic_cast<Circle*>(*it)->Set_Pos(x, y);
+//
+//			cout << "충돌 처리!\n\n";
+//
+//			(*it)->Reset_CollisionObj(); // 충돌체 정보 초기화
+//		}
+//	}
+//}
 
 void ObjectManager::Render(HDC hdc)
 {

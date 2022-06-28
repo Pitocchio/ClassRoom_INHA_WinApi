@@ -18,10 +18,8 @@ void Circle::Render(HDC hdc)
 
 void Circle::Move()
 {
-	/*m_Pos.y += sinf(m_Theta) * m_Force;
-	m_Pos.x += cosf(m_Theta) * m_Force;*/
-	m_Pos.x += cosf(PI / 180 * m_Theta) * m_Force;
-	m_Pos.y += sinf(PI / 180 * m_Theta) * m_Force;
+	m_Pos.x += m_lookVec.x * m_Distance;
+	m_Pos.y += m_lookVec.y * m_Distance;
 }
 
 void Circle::CheckCollisionWall(RECT rc)
@@ -29,24 +27,31 @@ void Circle::CheckCollisionWall(RECT rc)
 	if (m_Pos.x < (rc.left + m_Radius)) // Left
 	{
 		m_Pos.x = m_Pos.x - (m_Pos.x - m_Radius - rc.left);
-		m_Theta = 180 - m_Theta;
+		//m_Theta = 180 - m_Theta;
+		m_lookVec.x *= -1;
 	}
 
 	else if (m_Pos.x > (rc.right - m_Radius)) // Right
 	{
 		m_Pos.x = m_Pos.x - (m_Pos.x + m_Radius - rc.right);
-		m_Theta = 180 - m_Theta;
+		//m_Theta = 180 - m_Theta;
+		m_lookVec.x *= -1;
+
 	}
 
 	else if (m_Pos.y < (rc.top + m_Radius)) // Top
 	{
 		m_Pos.y = m_Pos.y + m_Radius - rc.top;
-		m_Theta *= -1;
+		//m_Theta *= -1;
+		m_lookVec.y *= -1;
+
 	}
 	else if (m_Pos.y > (rc.bottom - m_Radius)) // Bottom
 	{
 		m_Pos.y = m_Pos.y + (rc.bottom - (m_Pos.y + m_Radius));
-		m_Theta *= -1;
+		//m_Theta *= -1;
+		m_lookVec.y *= -1;
+
 	}
 
 
