@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <commdlg.h>
+#pragma comment(lib, "msimg32.lib") // 비트맵 이미지를 사용하기 위한 라이브러리
 
 #define MAX_LOADSTRING 100
 
@@ -15,10 +16,41 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+// >> : bipmap
+HBITMAP hBackImage;
+BITMAP bitBack;
+
+HBITMAP hSigongImage;
+BITMAP bitSigong;
+
+HBITMAP hAniImage;
+BITMAP bitAni;
+const int Sprite_Size_X = 57; // 개별사이즈
+const int Sprite_Size_Y = 52; // 개별사이즈
+int Run_Frame_Max = 0;
+int Run_Frame_Min = 0;
+int curFrame = Run_Frame_Min;
+
+
+// Double Buffering
+HBITMAP hDoubleBufferImage;
+void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc);
+
+
+void UpdateFrame(HWND hWnd);
+
+
+void CreateBitmap();
+void DrawBitmap(HWND hWnd, HDC hdc);
+void DeleteBitmap();
+void DrawRectText(HDC hdc);
+
+// << :
 
 void DrawMove_Ellipse(HDC hdc, POINT curPos);
 void DrawRectangle_Test(HDC hdc);
 void OutFromFile(TCHAR filename[], HWND hwnd); // 파일을 읽어서 윈도우 창에 그려주는 함수
+VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime);
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -98,24 +130,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 int KeyDown(0), KeyUp(0);
 
 bool bFlag(0);
+static RECT rcClient;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static RECT rcClient;
     static int selectedMenu;
     RECT rc{ 0 };
     static HMENU hMenu, hSubmenu;
+
 
     switch (message)
     {
     case WM_CREATE:
 
         GetClientRect(hWnd, &rcClient);
-        
+
+        SetTimer(hWnd, 1, 50, TimerProc);
+
+
         // 스크립트로 메뉴창 제어
         hMenu = GetMenu(hWnd);
         hSubmenu = GetSubMenu(hMenu, 2);
        /* EnableMenuItem(hSubmenu, ID_DrawCircle, MF_DISABLED);
         EnableMenuItem(hSubmenu, ID_DrawRect, MF_DISABLED);*/
+
+
+        CreateBitmap();
+
 
         break;
 
@@ -215,24 +256,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-        if (bFlag)
-            SelectObject(hdc, GetStockObject(LTGRAY_BRUSH));
-        else
-            SelectObject(hdc, GetStockObject(WHITE_BRUSH));
+      
 
-       /* switch (selectedMenu)
-        {
-            case
-        }*/
-
+        //DrawBitmap(hWnd, hdc);
+        DrawBitMapDoubleBuffering(hWnd, hdc);
+        DrawRectText(hdc);
 
         EndPaint(hWnd, &ps); 
     }
     break;
     case WM_DESTROY:
         HideCaret(hWnd);
-        PostQuitMessage(0);
         KillTimer(hWnd, 1);
+        DeleteBitmap();
+        PostQuitMessage(0);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -300,4 +337,181 @@ void OutFromFile(TCHAR filename[], HWND hwnd) // 읽어올 파일 이름과, 그 내용을 �
     }
     fclose(fPtr);
     ReleaseDC(hwnd, hdc);
+}
+
+
+// << : bitmap
+void CreateBitmap() 
+{
+    // : for bitblt
+    hBackImage = (HBITMAP)LoadImage(NULL, TEXT("images/수지.bmp"), 
+        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+
+    GetObject(hBackImage, sizeof(BITMAP), &bitBack);
+
+    // : for trans...bit
+    hSigongImage = (HBITMAP)LoadImage(NULL, TEXT("images/sigong.bmp"),
+        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    GetObject(hSigongImage, sizeof(BITMAP), &bitSigong);
+
+    // : for Animation
+    hAniImage = (HBITMAP)LoadImage(NULL, TEXT("images/zero_run.bmp"),
+        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    GetObject(hAniImage, sizeof(BITMAP), &bitAni);
+
+    Run_Frame_Max = bitAni.bmWidth / Sprite_Size_X - 1;
+    Run_Frame_Min = 2;
+    curFrame = Run_Frame_Min;
+}
+
+void DrawBitmap(HWND hWnd, HDC hdc)
+{
+    HDC hMemDC;
+    HBITMAP hOldBitmap;
+    int bx, by;
+
+
+    // SUJI
+    hMemDC = CreateCompatibleDC(hdc);
+    hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBackImage);
+    bx = bitBack.bmWidth;
+    by = bitBack.bmHeight;
+
+    BitBlt(hdc, 0, 0, bx, by, hMemDC, 0, 0, SRCCOPY); // 윈도우 창에서 이미지가 그려질 원점 세팅 / 가져올 이미지 소스의 원점 세팅 / 일반적 그림
+    StretchBlt(hdc, 900, 0, 200, 200, hMemDC, 0, 0, bx, by, SRCCOPY); // 이미지 소스 비율 세팅 해서 그림
+    
+    SelectObject(hMemDC, hOldBitmap);
+    DeleteDC(hMemDC);
+
+
+    // Sigong
+    hMemDC = CreateCompatibleDC(hdc);
+    hOldBitmap = (HBITMAP)SelectObject(hMemDC, hSigongImage);
+    bx = bitSigong.bmWidth;
+    by = bitSigong.bmHeight;
+
+    TransparentBlt(hdc, 200, 200, bx, by, hMemDC, 0, 0, bx, by, RGB(255, 0, 255)); // 분홍색 빼기
+
+    SelectObject(hMemDC, hOldBitmap);
+    DeleteDC(hMemDC);
+
+
+
+    // for : Animation
+    hMemDC = CreateCompatibleDC(hdc);
+    hOldBitmap = (HBITMAP)SelectObject(hMemDC, hAniImage);
+    bx = bitAni.bmWidth / 16; //개별 사이즈
+    by = bitAni.bmHeight / 2; // 개별사이즈
+
+    int xStart = curFrame * bx;// 위치값
+    int yStart = 0;
+
+    TransparentBlt(hdc, 200, 400, bx, by, hMemDC, xStart, yStart, bx, by, RGB(255, 0, 255)); // 분홍색 빼기
+
+    SelectObject(hMemDC, hOldBitmap);
+    DeleteDC(hMemDC);
+}
+
+void DeleteBitmap()
+{
+    DeleteObject(hBackImage);
+    DeleteObject(hSigongImage);
+    DeleteObject(hAniImage);
+}
+
+// >> : bitmap
+
+void UpdateFrame(HWND hWnd)
+{
+    curFrame++;
+    if (curFrame > Run_Frame_Max)
+        curFrame = Run_Frame_Min;
+}
+
+VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
+{
+    UpdateFrame(hWnd);
+    InvalidateRect(hWnd, NULL, false);
+}
+
+void DrawRectText(HDC hdc) // 텍스트 출력
+{
+    static int yPos = 0;
+    TCHAR strTest[] = _T("이미지 출력");
+    TextOut(hdc, 10, yPos, strTest, _tcslen(strTest));
+    yPos += 5;
+    if (yPos > rcClient.bottom) // 텍스트가 윈도우 창 아래로 내려간다면 위치값 다시 위로 세팅 
+        yPos = 0;
+}
+
+void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
+{
+ 
+    HDC hMemDC;
+    HBITMAP hOldBitmap;
+    int bx, by;
+
+    HDC hMemDC2;
+    HBITMAP hOldBitmap2;
+
+    hMemDC = CreateCompatibleDC(hdc);
+
+    if (hDoubleBufferImage == NULL)
+        hDoubleBufferImage = CreateCompatibleBitmap(hdc, rcClient.right, rcClient.bottom); // 더블 버퍼링용 이미지 생성
+
+    hOldBitmap = (HBITMAP)SelectObject(hMemDC, hDoubleBufferImage);
+
+    // for : backImage
+    {
+        hMemDC2 = CreateCompatibleDC(hMemDC);
+        hOldBitmap2 = (HBITMAP)SelectObject(hMemDC2, hBackImage);
+
+        bx = bitBack.bmWidth;
+        by = bitBack.bmHeight;
+
+        BitBlt(hMemDC, 0, 0, bx, by, hMemDC2, 0, 0, SRCCOPY); // 윈도우 창에서 이미지가 그려질 원점 세팅 / 가져올 이미지 소스의 원점 세팅 / 일반적 그림
+        StretchBlt(hMemDC, 900, 0, 200, 200, hMemDC2, 0, 0, bx, by, SRCCOPY); // 이미지 소스 비율 세팅 해서 그림
+
+        SelectObject(hMemDC2, hOldBitmap2);
+        DeleteDC(hMemDC2);
+    }
+
+
+    // for : sigong
+    {
+        hMemDC2 = CreateCompatibleDC(hMemDC);
+        hOldBitmap2 = (HBITMAP)SelectObject(hMemDC2, hSigongImage);
+        bx = bitSigong.bmWidth;
+        by = bitSigong.bmHeight;
+
+        TransparentBlt(hMemDC, 200, 200, bx, by, hMemDC2, 0, 0, bx, by, RGB(255, 0, 255)); // 분홍색 빼기
+
+        SelectObject(hMemDC2, hOldBitmap2);
+        DeleteDC(hMemDC2);
+    }
+
+
+
+    // for : Animation
+    {
+        hMemDC2 = CreateCompatibleDC(hMemDC);
+        hOldBitmap2 = (HBITMAP)SelectObject(hMemDC2, hAniImage);
+        bx = bitAni.bmWidth / 16; //개별 사이즈
+        by = bitAni.bmHeight / 2; // 개별사이즈
+
+        int xStart = curFrame * bx;// 위치값
+        int yStart = 0;
+
+        TransparentBlt(hMemDC, 200, 400, bx, by, hMemDC2, xStart, yStart, bx, by, RGB(255, 0, 255)); // 분홍색 빼기
+
+        SelectObject(hMemDC2, hOldBitmap2);
+        DeleteDC(hMemDC2);
+    }
+
+    BitBlt(hdc, 0, 0, rcClient.right, rcClient.bottom, hMemDC, 0, 0, SRCCOPY);
+
+    SelectObject(hMemDC, hOldBitmap);
+
+    DeleteDC(hMemDC);
+
 }

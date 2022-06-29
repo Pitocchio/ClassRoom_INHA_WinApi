@@ -1,8 +1,30 @@
-﻿  Geometry.cpp
-C:\Users\chanjun\Documents\ClassRoom_INHA_WinApi\Geometry.cpp(12,12): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\chanjun\Documents\ClassRoom_INHA_WinApi\Geometry.cpp(29,30): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\chanjun\Documents\ClassRoom_INHA_WinApi\Geometry.cpp(30,30): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Pr_Main.cpp
+﻿  Circle.cpp
+  CollisionManager.cpp
+  Geometry.cpp
   ObjectManager.cpp
-  코드를 생성하고 있습니다...
-  WinApi32_Wizard.vcxproj -> C:\Users\chanjun\Documents\ClassRoom_INHA_WinApi\Debug\WinApi32_Wizard.exe
+  Pr_Main.cpp
+  Square.cpp
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(22,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(23,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(26,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(27,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(31,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(32,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(35,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(36,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(50,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(51,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(54,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(55,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(59,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(60,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(63,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Square.cpp(64,25): warning C4244: '=': 'double'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Geometry.cpp(27,30): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Geometry.cpp(28,30): warning C4244: '인수': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Circle.cpp(15,99): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Circle.cpp(15,75): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Circle.cpp(15,51): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Circle.cpp(15,27): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Pr_Main.cpp(37,15): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WinApi32_Wizard.vcxproj -> D:\CLASSROOM_INHA_WINAPI\WinApi32_Wizard\Debug\WinApi32_Wizard.exe

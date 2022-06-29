@@ -16,7 +16,7 @@ public:// Update
 	virtual void Move() override;
 	virtual void CheckCollisionWall(RECT rc) override;
 
-
+	
 
 private: // Variables
 	double m_Radius;

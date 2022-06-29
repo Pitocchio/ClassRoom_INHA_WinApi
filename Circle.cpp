@@ -51,8 +51,5 @@ void Circle::CheckCollisionWall(RECT rc)
 		m_Pos.y = m_Pos.y + (rc.bottom - (m_Pos.y + m_Radius));
 		//m_Theta *= -1;
 		m_lookVec.y *= -1;
-
 	}
-
-
 }

@@ -1,5 +1,4 @@
 #include "Geometry_.h"
-#include <ctime>
 #include <cmath>
 
 Geometry::Geometry() 
@@ -9,7 +8,6 @@ Geometry::Geometry()
 	//m_IsCollisionWall = 0;
 	m_IsCollisionObj = 0;
 	m_CollisionObj = NULL;
-	srand(time(NULL)); // 근데 왜 이거 여기다 두면 효과 있는 거야?
 };
 
 Geometry::~Geometry()

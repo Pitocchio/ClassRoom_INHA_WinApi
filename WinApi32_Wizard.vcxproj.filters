@@ -87,6 +87,9 @@
     <ClInclude Include="Geometry_.h">
       <Filter>소스 파일\PROJECT\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>소스 파일\PROJECT\Geometry\Circle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="All.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
       <Filter>소스 파일\PROJECT\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>소스 파일\PROJECT\Geometry\Circle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
