@@ -10,8 +10,17 @@ using namespace std;
 
 class ObjectManager
 {
+
 public: // Enum
 	enum OBJECT_TYPE { CIRCLE, SQUARE, STAR, OBJECT_TYPEEND };
+
+private:
+	typedef list<Geometry*> LIST_GEO; // list<Geometry*> 자료형을 LIST_GEO라는 이름으로 재정의 (즉 자료형의 이름을 재정의, 자료형 이름이 기니까 짧게 편하게 줄임)
+	typedef map <OBJECT_TYPE, LIST_GEO> OBJ_MAP; // 위와 마찬가지
+	/*
+	LIST_GEO = GEO_LIST
+	OBJ_MAP = OBJ_LIST
+	*/
 
 private: // SingleTone_Methods
 	ObjectManager();
@@ -21,6 +30,10 @@ public: // SingleTone_Variables
 	static ObjectManager* GetInstance();
 	static void DestroyInstance();
 	
+public: // Get
+	OBJ_MAP Get_Map() { return m_ObjMap; }
+	//LIST_GEO Get_type() { return list<Geometry*>; } // ?
+
 public: // Update
 	void Initialize();
 	void Update(); 
@@ -34,13 +47,8 @@ public: // Method
 private: // Variables
 	static ObjectManager* m_ObjMgr; // 싱글톤 오브젝트 매니저 스태틱 변수
 	
-	typedef list<Geometry*> LIST_GEO; // list<Geometry*> 자료형을 LIST_GEO라는 이름으로 재정의 (즉 자료형의 이름을 재정의, 자료형 이름이 기니까 짧게 편하게 줄임)
-	typedef map <OBJECT_TYPE, LIST_GEO> OBJ_MAP; // 위와 마찬가지
 	OBJ_MAP m_ObjMap;
 
 
-	/*
-	LIST_GEO = GEO_LIST
-	OBJ_MAP = OBJ_LIST
-	*/
+	
 };

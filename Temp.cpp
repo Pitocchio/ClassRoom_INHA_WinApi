@@ -51,6 +51,15 @@ void DrawMove_Ellipse(HDC hdc, POINT curPos);
 void DrawRectangle_Test(HDC hdc);
 void OutFromFile(TCHAR filename[], HWND hwnd); // 파일을 읽어서 윈도우 창에 그려주는 함수
 VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime);
+VOID CALLBACK keyStateProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime);
+TCHAR sKeyState[128];
+void Update();
+POINT ptAni = { 200, 400 };
+
+
+// << : Dialog (대화 창)
+BOOL CALLBACK Dlg_Proc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
+
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -75,12 +84,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    while (GetMessage(&msg, nullptr, 0, 0))
+  /*  while (GetMessage(&msg, nullptr, 0, 0))
     {
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+        }
+    }*/
+    while (true) // 메시지 발생 유무에 관계없이 돌리겠다
+    {
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // 메시지가 발생하지 않았다면
+        {
+            if (msg.message == WM_QUIT)
+            {
+                break;
+            }
+            else
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+        else
+        {
+            Update();
         }
     }
 
@@ -146,6 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         GetClientRect(hWnd, &rcClient);
 
         SetTimer(hWnd, 1, 50, TimerProc);
+        //SetTimer(hWnd, 2, 200, keyStateProc);
 
 
         // 스크립트로 메뉴창 제어
@@ -248,7 +277,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
 
-
+    case WM_LBUTTONDOWN:
+    {
+        DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, Dlg_Proc);
+    }
+    break;
 
 
     case WM_PAINT:
@@ -256,8 +289,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
 
-      
-
+     
         //DrawBitmap(hWnd, hdc);
         DrawBitMapDoubleBuffering(hWnd, hdc);
         DrawRectText(hdc);
@@ -268,6 +300,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         HideCaret(hWnd);
         KillTimer(hWnd, 1);
+        //KillTimer(hWnd, 2);
         DeleteBitmap();
         PostQuitMessage(0);
         break;
@@ -279,6 +312,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
     UNREFERENCED_PARAMETER(lParam);
     switch (message)
     {
@@ -294,6 +328,8 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+
+ 
 }
 
 
@@ -434,6 +470,141 @@ VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
     InvalidateRect(hWnd, NULL, false);
 }
 
+
+VOID CALLBACK keyStateProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
+{
+    if (GetKeyState('A') & 0x8000) // A키가 눌렸는지 검사
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T("A-key pressed"));
+    }
+    else if (GetKeyState('D') & 0x8000)
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T("D-key pressed"));
+    }
+    else
+    {
+        wsprintf(sKeyState, TEXT("%s"), _T(" "));
+    }
+}
+
+void Update()
+{
+    DWORD newTime = GetTickCount();
+    static DWORD oldTime = newTime;
+    if (newTime - oldTime < 100)
+        return;
+    oldTime = newTime;
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+    {
+        ptAni.x += 10;
+    }
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+    {
+        ptAni.x -= 10;
+    }
+    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    {
+        ptAni.y -= 10;
+    }
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    {
+        ptAni.y += 10;
+    }
+}
+
+BOOL CALLBACK Dlg_Proc(HWND hDlg, UINT iMsg, WPARAM wParam, LPARAM lParam)
+{
+    UNREFERENCED_PARAMETER(lParam);
+    switch (iMsg)
+    {
+    case WM_INITDIALOG:
+        {
+            HWND hBtn = GetDlgItem(hDlg, IDC_PAUSE);
+            EnableWindow(hBtn, FALSE); // 처음 생성시 중지 버튼은 비활성화 상태
+        }
+        return TRUE;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDC_BUTTON_COPY:
+            {
+                TCHAR word[128];
+
+                GetDlgItemText(hDlg, IDC_EDIT_SOURCE, word, 128); // 문자열을 가져옴 // 아이디 비번 가져오기 같은 기능
+                SetDlgItemText(hDlg, IDC_EDIT_COPY, word);
+
+            }
+            break;
+
+        case IDC_BUTTON_CLEAR:
+            {
+                SetDlgItemText(hDlg, IDC_EDIT_SOURCE,_T(""));
+                SetDlgItemText(hDlg, IDC_EDIT_COPY, _T(""));
+            }
+            break;
+
+        case IDC_START:
+            {
+                HWND hBtn = GetDlgItem(hDlg, IDC_START);
+                EnableWindow(hBtn, FALSE); 
+
+                hBtn = GetDlgItem(hDlg, IDC_PAUSE);
+                EnableWindow(hBtn, TRUE); 
+
+                SetDlgItemText(hDlg, IDC_TEXT, _T("시작됐어요"));
+            }
+            break;
+
+        case IDC_PAUSE:
+            {
+                HWND hBtn = GetDlgItem(hDlg, IDC_START);
+                EnableWindow(hBtn, TRUE);
+
+                hBtn = GetDlgItem(hDlg, IDC_PAUSE);
+                EnableWindow(hBtn, FALSE);
+
+                SetDlgItemText(hDlg, IDC_TEXT, _T("중지됐어요"));
+            }
+            break;
+        case IDC_CLOSE :
+            {
+
+                HWND hBtn = GetDlgItem(hDlg, IDC_START);
+                EnableWindow(hBtn, TRUE);
+
+                hBtn = GetDlgItem(hDlg, IDC_PAUSE);
+                EnableWindow(hBtn, FALSE);
+
+                SetDlgItemText(hDlg, IDC_TEXT, _T("종료됐어요"));
+
+                return TRUE;
+            }
+            break;
+        case IDC_BUTTON_PRINT:
+            {
+                HDC hdc = GetDC(hDlg);
+                TextOut(hdc, 10, 10, _T("Hello Button!!"), 14);
+                SetDlgItemText(hDlg, IDC_TEXT, _T("Hello Button!!"));
+                ReleaseDC(hDlg, hdc);
+                break;
+            }
+        case IDOK:
+            {
+                break;
+            }
+        case IDCANCEL:
+            {
+                EndDialog(hDlg, LOWORD(wParam));
+                return TRUE;
+                break;
+            }
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
 void DrawRectText(HDC hdc) // 텍스트 출력
 {
     static int yPos = 0;
@@ -442,6 +613,8 @@ void DrawRectText(HDC hdc) // 텍스트 출력
     yPos += 5;
     if (yPos > rcClient.bottom) // 텍스트가 윈도우 창 아래로 내려간다면 위치값 다시 위로 세팅 
         yPos = 0;
+
+    TextOut(hdc, 50, 10, sKeyState, _tcsclen(sKeyState));
 }
 
 void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
@@ -476,7 +649,6 @@ void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
         DeleteDC(hMemDC2);
     }
 
-
     // for : sigong
     {
         hMemDC2 = CreateCompatibleDC(hMemDC);
@@ -490,8 +662,6 @@ void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
         DeleteDC(hMemDC2);
     }
 
-
-
     // for : Animation
     {
         hMemDC2 = CreateCompatibleDC(hMemDC);
@@ -502,7 +672,18 @@ void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
         int xStart = curFrame * bx;// 위치값
         int yStart = 0;
 
-        TransparentBlt(hMemDC, 200, 400, bx, by, hMemDC2, xStart, yStart, bx, by, RGB(255, 0, 255)); // 분홍색 빼기
+        TransparentBlt(hMemDC, ptAni.x, ptAni.y, bx, by, 
+            hMemDC2, xStart, yStart, bx, by, RGB(255, 0, 255)); // 분홍색 빼기
+
+        TransparentBlt(hMemDC, 900, 400, bx, by, 
+            hMemDC2, xStart, yStart, bx, by, RGB(255, 0, 255)); 
+
+
+        xStart = Run_Frame_Max * bx - xStart;
+        yStart = by;
+        TransparentBlt(hMemDC, ptAni.x, ptAni.y + 50, bx, by, 
+            hMemDC2, xStart, yStart, bx, by, RGB(255, 0, 255)); 
+
 
         SelectObject(hMemDC2, hOldBitmap2);
         DeleteDC(hMemDC2);
@@ -513,5 +694,4 @@ void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
     SelectObject(hMemDC, hOldBitmap);
 
     DeleteDC(hMemDC);
-
 }

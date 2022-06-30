@@ -21,11 +21,11 @@ void ObjectManager::DestroyInstance()
 
 void ObjectManager::Initialize()
 {
-	for (int i = 0; (OBJECT_TYPE)i < OBJECT_TYPEEND; ++i)
+	/*for (int i = 0; (OBJECT_TYPE)i < OBJECT_TYPEEND; ++i)
 	{
 		LIST_GEO temp;
 		m_ObjMap.insert({ (OBJECT_TYPE)i , temp });
-	}
+	}*/
 
 	/*
 	위의 방식은 아예 맵에 리스트를 ENUM만큼 할당해두고 시작, 즉 아직 리스트에 요소가 들어가지 않았더라도 업데이트에서는 불필요하게 리스를 for문으로 순환함
@@ -35,7 +35,7 @@ void ObjectManager::Initialize()
 
 void ObjectManager::Update() // General Update
 {
-	//map의 key를 돈다
+	//map의 key를 돈다(first 안써도 OK)
 	for (OBJ_MAP::iterator mapiter = m_ObjMap.begin(); mapiter != m_ObjMap.end(); ++mapiter) // OBJLIST
 	{
 		//map의 value(리스트)를 돈다

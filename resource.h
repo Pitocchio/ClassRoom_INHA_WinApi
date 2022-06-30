@@ -14,6 +14,16 @@
 #define IDR_MAINFRAME                   128
 #define IDB_PNG1                        129
 #define IDR_MENU1                       130
+#define IDD_DIALOG1                     131
+#define IDC_BUTTON_PRINT                1001
+#define IDC_TEXT                        1002
+#define IDC_START                       1003
+#define IDC_PAUSE                       1004
+#define IDC_CLOSE                       1005
+#define IDC_EDIT_SOURCE                 1009
+#define IDC_EDIT_COPY                   1010
+#define IDC_BUTTON_COPY                 1011
+#define IDC_BUTTON_CLEAR                1012
 #define ID_DrawCircle                   32774
 #define ID_DrawRect                     32780
 #define ID_OpenFile                     32782
@@ -25,9 +35,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        131
+#define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32789
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

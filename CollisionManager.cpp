@@ -34,6 +34,17 @@ void CollisionManager::Detect_Collision()
 	// 2. 오브젝트 충돌 검사
 
 
+	//for (OBJ_MAP::iterator mapiter = m_ObjMap.begin(); mapiter != m_ObjMap.end(); ++mapiter) // OBJLIST
+	//{
+	//	for (LIST_GEO::iterator iter = mapiter->second.begin(); iter != mapiter->second.end(); ++iter) // GEOLIST
+	//	{
+	//		(*iter)->CheckCollisionWall(rc);
+	//	}
+	//}
+	ObjectManager::GetInstance()->Get_Map();
+
+	for ()
+
 	
 }
 
