@@ -61,6 +61,19 @@ POINT ptAni = { 200, 400 };
 BOOL CALLBACK Dlg_Proc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam);
 
 
+// >> : GDI+
+
+#include <objidl.h>
+#include <gdiplus.h>
+#pragma comment(lib,"Gdiplus.lib")
+using namespace Gdiplus;
+
+ULONG_PTR g_GdiToken;
+void Gdi_Init();
+void Gdi_Draw(HDC hdc);
+void Gdi_End();
+
+// <<
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
@@ -92,6 +105,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }*/
+    Gdi_Init();
     while (true) // 메시지 발생 유무에 관계없이 돌리겠다
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) // 메시지가 발생하지 않았다면
@@ -111,6 +125,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             Update();
         }
     }
+    Gdi_End();
 
     return (int)msg.wParam;
 }
@@ -608,7 +623,7 @@ BOOL CALLBACK Dlg_Proc(HWND hDlg, UINT iMsg, WPARAM wParam, LPARAM lParam)
 void DrawRectText(HDC hdc) // 텍스트 출력
 {
     static int yPos = 0;
-    TCHAR strTest[] = _T("이미지 출력");
+    TCHAR strTest[] = _T("내려갑니다~");
     TextOut(hdc, 10, yPos, strTest, _tcslen(strTest));
     yPos += 5;
     if (yPos > rcClient.bottom) // 텍스트가 윈도우 창 아래로 내려간다면 위치값 다시 위로 세팅 
@@ -689,9 +704,138 @@ void DrawBitMapDoubleBuffering(HWND hWnd, HDC hdc)
         DeleteDC(hMemDC2);
     }
 
+    // Gdi
+    Gdi_Draw(hMemDC);
+    // Gdi
+
     BitBlt(hdc, 0, 0, rcClient.right, rcClient.bottom, hMemDC, 0, 0, SRCCOPY);
 
     SelectObject(hMemDC, hOldBitmap);
 
     DeleteDC(hMemDC);
+}
+
+
+void Gdi_Init()
+{
+    GdiplusStartupInput gpsi;
+    GdiplusStartup(&g_GdiToken, &gpsi, NULL);
+}
+
+void Gdi_Draw(HDC hdc)
+{
+    Graphics graphics(hdc);
+    // >> : txt
+    SolidBrush brush(Color(255, 255, 0, 0));
+    FontFamily fontFamily(L"Times New Roman");
+    Font font(&fontFamily, 100, FontStyleRegular, UnitPixel);
+    PointF pointF(10.0f, 20.0f);
+    graphics.DrawString(L"배고프다 배고파!", -1, &font, pointF, &brush);
+    // << : txt
+
+    Pen pen(Color(255, 0, 255, 255));
+    graphics.DrawLine(&pen, 0, 0, 300, 300);
+
+    // >> : image
+    Image img((WCHAR*)L"images/sigong.png");
+    int w = img.GetWidth();
+    int h = img.GetHeight();
+
+    graphics.DrawImage(&img, 275, 30, w, h);
+    // << : image
+
+    // >> : ani
+    Image img2((WCHAR*)L"images/zero_run.png");
+    w = img2.GetWidth() / 16;
+    h = img2.GetHeight() / 2;
+
+    int xStart = curFrame * w;
+    int yStart = 0;
+
+    ImageAttributes imgAttr;
+    imgAttr.SetColorKey(Color(245, 0, 245), Color(255, 10, 255));
+    graphics.DrawImage(&img2, Rect(400, 100, w, h), xStart, yStart, w, h, UnitPixel, &imgAttr);
+    // << : ani
+
+
+    // >> : alpha rect..
+    brush.SetColor(Color(128, 255, 0, 0));
+    graphics.FillRectangle(&brush, 400, 100, w, h);
+    // << 
+
+
+    // >> : rotation image
+
+
+    
+    Image* pImg = nullptr;
+    pImg = Image::FromFile((WCHAR*)L"Images/sigong.png");
+    int xPos = 300;
+    int yPos = 200; // 회전의 중심 좌표
+    if (pImg) // nullcheck 필수!
+    {
+        w = pImg->GetWidth();
+        h = pImg->GetHeight();
+
+        Gdiplus::Matrix mat; // 행렬
+        static int rot = 0;
+
+        mat.RotateAt((rot % 360), Gdiplus::PointF(xPos + (float)(w / 2), yPos + (float)(w / 2))); // 앵글, 중점 
+
+        graphics.SetTransform(&mat);
+        graphics.DrawImage(pImg, xPos, yPos, w, h);
+
+        rot += 10;
+
+        // 회전후 초기화 필수!
+        mat.Reset();
+        graphics.SetTransform(&mat);
+
+        // >> : alpha image
+        REAL transparency = 0.5;
+        ColorMatrix colorMatrix =
+        {
+            1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, transparency, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        };
+
+        imgAttr.SetColorMatrix(&colorMatrix);
+        xPos = 400;
+        graphics.DrawImage(pImg, Rect(xPos, yPos, w, h),  // dest doord
+            0, 0, w, h, // source doord
+            UnitPixel, &imgAttr);
+
+        // gray
+        ColorMatrix grayMatrix =
+        {
+            0.3f, 0.3f, 0.3f, 0.0f, 0.0f,
+            0.6f, 0.6f, 0.6f, 0.0f, 0.0f,
+            0.1f, 0.1f, 0.1f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        };
+        imgAttr.SetColorMatrix(&grayMatrix);
+        xPos = 500;
+        graphics.DrawImage(pImg, Rect(xPos, yPos, w, h), 0, 0, w, h, UnitPixel, &imgAttr);
+
+
+
+        xPos = 600;
+        pImg->RotateFlip(RotateNoneFlipX); // 플립
+        graphics.DrawImage(pImg, Rect(xPos, yPos, w, h), 0, 0, w, h, UnitPixel, &imgAttr);
+
+        delete pImg;
+    }
+    // <<
+
+
+ 
+}
+
+void Gdi_End()
+{
+    GdiplusShutdown(g_GdiToken);
 }

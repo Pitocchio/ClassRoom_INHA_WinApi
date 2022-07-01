@@ -32,7 +32,7 @@ void ObjectManager::Initialize()
 	그러나 아래 방식은 리스트에 요소가 들어가지 않았다면 그 때 맵에 리스트를 할당, 즉 리스트가 0이니까 리스트에 요소가 없다면 리스트를 돌지 않음 (훨씬 효율적, but 가독성은 위가 승)
 	*/
 }
-
+ 
 void ObjectManager::Update() // General Update
 {
 	//map의 key를 돈다(first 안써도 OK)
